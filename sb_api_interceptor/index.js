@@ -88,9 +88,7 @@
                      return reject(err);
                  }
                  kidToPublicKeyMap[filename] = content;
-                 console.log(`${ CONSTANTS.logPrefix } loaded kid: ${ filename }`);
                  if (fileCount === 0) {
-                     console.info("loaded all public key for authentication");
                      useKidBasedValidation = true;
                      resolve();
                  }
