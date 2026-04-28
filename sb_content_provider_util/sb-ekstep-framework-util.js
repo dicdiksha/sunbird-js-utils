@@ -165,7 +165,7 @@ function sendRequest (http_options, cb) {
   delete options.headers['telemetryData']
 
   httpUtil.sendRequest(options, function (err, resp, body) {
-    console.log('sendRequest==============',resp)
+    console.log('=sendRequest=============',resp)
     console.log('sendRequest==============statusCode',resp.statusCode)
     console.log('sendRequest==============body',resp.statusCode)
     if (resp && resp.statusCode && body) {
