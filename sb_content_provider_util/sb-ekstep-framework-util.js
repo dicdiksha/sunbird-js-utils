@@ -162,19 +162,41 @@ function generateApiCallLogEvent (http_options) {
 
 function sendRequest (http_options, cb) {
   var options = Object.assign({}, http_options)
-  //removed api call event
-  //generateApiCallLogEvent(http_options)
+
   delete options.headers['telemetryData']
 
   httpUtil.sendRequest(options, function (err, resp, body) {
-    if (resp && resp.statusCode && body) {
-      console.log('resp=============',resp)
-      console.log('resp statusCode=============',resp.statusCode)
-      console.log('resp body=============',body)
-      body.statusCode = resp.statusCode ? resp.statusCode : 500
-      cb(null, body)
-    } else {
-      cb(true, null)
+
+    //  log actual error first
+    if (err) {
+      console.error('sendRequest HTTP request error:', err)
+      console.error('sendRequest Stack:', err.stack)
+      console.error('sendRequest Request options:', options)
+      return cb(err, null)
+    }
+
+    //  log unexpected missing response
+    if (!resp) {
+      console.error('sendRequest No response received')
+      console.error('sendRequest Body:', body)
+      return cb(new Error('No response from server'), null)
+    }
+
+    console.log('resp=============', resp)
+    console.log('resp statusCode=============', resp.statusCode)
+    console.log('resp body=============', body)
+
+    try {
+      if (body) {
+        body.statusCode = resp.statusCode ? resp.statusCode : 500
+        return cb(null, body)
+      } else {
+        console.error('sendRequest Empty body received')
+        return cb(new Error('Empty response body'), null)
+      }
+    } catch (parseErr) {
+      console.error('sendRequest Error processing response:', parseErr)
+      return cb(parseErr, null)
     }
   })
 }
