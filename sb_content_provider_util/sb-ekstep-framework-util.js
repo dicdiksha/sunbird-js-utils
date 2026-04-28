@@ -32,6 +32,7 @@ var getHttpOptions = function (url, data, method, formData, headers) {
 
 getChannelValuesById = function (channelId, headers, cb) {
   var url = configUtil.getConfig('CONTENT_SERVICE_BASE_URL') + configUtil.getConfig('CHANNEL_URI') + '/' + channelId
+  console.log("url getChannelValuesById==============================",url)
   var options = getHttpOptions(url, null, 'GET', false, headers)
   sendRequest(options, cb)
 }
