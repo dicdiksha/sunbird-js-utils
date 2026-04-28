@@ -50,6 +50,7 @@ ChannelUpdate = function (data, channelId, headers, cb) {
 
 getFrameworkById = function (frameworkId, querystring, headers, cb) {
   var url = configUtil.getConfig('CONTENT_REPO_BASE_URL') + configUtil.getConfig('FRAMEWORK_URI') + '/' + frameworkId + querystring
+  console.log("url==============================",url)
   var options = getHttpOptions(url, null, 'GET', false, headers)
   sendRequest(options, cb)
 }
@@ -166,6 +167,9 @@ function sendRequest (http_options, cb) {
 
   httpUtil.sendRequest(options, function (err, resp, body) {
     if (resp && resp.statusCode && body) {
+      console.log('resp=============',resp)
+      console.log('resp statusCode=============',resp.statusCode)
+      console.log('resp body=============',body)
       body.statusCode = resp.statusCode ? resp.statusCode : 500
       cb(null, body)
     } else {
