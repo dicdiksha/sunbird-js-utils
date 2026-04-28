@@ -32,7 +32,6 @@ var getHttpOptions = function (url, data, method, formData, headers) {
 
 getChannelValuesById = function (channelId, headers, cb) {
   var url = configUtil.getConfig('CONTENT_SERVICE_BASE_URL') + configUtil.getConfig('CHANNEL_URI') + '/' + channelId
-  console.log("url getChannelValuesById==============================",url)
   var options = getHttpOptions(url, null, 'GET', false, headers)
   sendRequest(options, cb)
 }
@@ -51,7 +50,6 @@ ChannelUpdate = function (data, channelId, headers, cb) {
 
 getFrameworkById = function (frameworkId, querystring, headers, cb) {
   var url = configUtil.getConfig('CONTENT_REPO_BASE_URL') + configUtil.getConfig('FRAMEWORK_URI') + '/' + frameworkId + querystring
-  console.log("url==============================",url)
   var options = getHttpOptions(url, null, 'GET', false, headers)
   sendRequest(options, cb)
 }
@@ -167,11 +165,12 @@ function sendRequest (http_options, cb) {
   delete options.headers['telemetryData']
 
   httpUtil.sendRequest(options, function (err, resp, body) {
+    console.log('sendRequest==============',resp)
+    console.log('sendRequest==============statusCode',resp.statusCode)
+    console.log('sendRequest==============body',resp.statusCode)
     if (resp && resp.statusCode && body) {
-      console.log('resp=============',resp)
-      console.log('resp statusCode=============',resp.statusCode)
-      console.log('resp body=============',body)
       body.statusCode = resp.statusCode ? resp.statusCode : 500
+      console.log('sendRequest==============bodyplus',body)
       cb(null, body)
     } else {
       cb(true, null)
